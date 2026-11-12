@@ -1101,12 +1101,7 @@
 
     // API Origins
     const apiOverride = new URLSearchParams(window.location.search).get('api');
-    const isLocalStaticServer = ['5500', '5501', '5502', '5503', '5173', '3000'].includes(window.location.port);
-    const apiOrigin = apiOverride || (
-      isLocalStaticServer
-        ? `${window.location.protocol === 'https:' ? 'https:' : 'http:'}//${window.location.hostname || '127.0.0.1'}:8000`
-        : window.location.origin
-    );
+    const apiOrigin = apiOverride || 'https://api-tophero.freesrv.com:14538';
     const API_BASE = apiOrigin.replace(/\/+$/, '');
 
     // State
