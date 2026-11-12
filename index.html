@@ -1,0 +1,1644 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b0f19">
+  <title>Top Heroes · Danh Sách Tài Khoản &amp; Check-in</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-base: #0b0f19;
+      --bg-surface: #111726;
+      --bg-surface-elevated: #172033;
+      --bg-row: rgba(18, 25, 41, 0.85);
+      --bg-row-hover: rgba(26, 36, 58, 0.95);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --primary-glow: rgba(99, 102, 241, 0.35);
+      
+      --accent-cyan: #06b6d4;
+      --accent-gold: #f59e0b;
+      --accent-green: #10b981;
+      --accent-red: #ef4444;
+      
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 20px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-base);
+      background-image: 
+        radial-gradient(ellipse 70% 40% at 50% -10%, rgba(99, 102, 241, 0.16), transparent 70%),
+        radial-gradient(circle at 10% 25%, rgba(6, 182, 212, 0.08), transparent 45%),
+        linear-gradient(180deg, #0b0f19 0%, #0d1322 100%);
+      background-attachment: fixed;
+      color: var(--text-main);
+      padding: 24px 16px 60px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      width: min(1060px, 100%);
+      margin: 0 auto;
+    }
+
+    /* Header */
+    .app-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      padding-bottom: 22px;
+      border-bottom: 1px solid var(--border-subtle);
+      margin-bottom: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-logo {
+      width: 46px;
+      height: 46px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 16px rgba(99, 102, 241, 0.35);
+      flex-shrink: 0;
+    }
+
+    .brand-logo svg {
+      width: 26px;
+      height: 26px;
+      fill: #fff;
+    }
+
+    .brand-text h1 {
+      font-size: 1.3rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: linear-gradient(120deg, #ffffff 40%, #c7d2fe 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .brand-text p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .header-status-panel {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .clock-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .clock-badge svg {
+      width: 15px;
+      height: 15px;
+      stroke: var(--accent-cyan);
+    }
+
+    .auto-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      border-radius: var(--radius-md);
+      font-size: 0.82rem;
+      color: #6ee7b7;
+      font-weight: 600;
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-green);
+      box-shadow: 0 0 10px var(--accent-green);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    /* Stats Overview */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      backdrop-filter: blur(12px);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .stat-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .stat-icon.total { background: rgba(99, 102, 241, 0.15); color: #818cf8; }
+    .stat-icon.success { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+    .stat-icon.pending { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+    .stat-icon.failed { background: rgba(239, 68, 68, 0.15); color: #f87171; }
+
+    .stat-icon svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .stat-info .stat-value {
+      font-size: 1.45rem;
+      font-weight: 800;
+      line-height: 1.1;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .stat-info .stat-label {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      margin-top: 2px;
+    }
+
+    /* Action Form Bar */
+    .action-panel {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl);
+      padding: 20px 24px;
+      margin-bottom: 26px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 12px 36px -10px rgba(0, 0, 0, 0.45);
+    }
+
+    .input-action-bar {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .input-wrapper {
+      flex: 1;
+      min-width: 260px;
+      position: relative;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-dim);
+      pointer-events: none;
+      display: flex;
+    }
+
+    .input-icon svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .id-input {
+      width: 100%;
+      height: 46px;
+      padding: 0 44px 0 42px;
+      background: var(--bg-base);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius-md);
+      color: var(--text-main);
+      font-size: 0.92rem;
+      font-family: 'JetBrains Mono', monospace;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .id-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-glow);
+    }
+
+    .id-input::placeholder {
+      color: var(--text-dim);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .paste-btn {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.06);
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.72rem;
+      padding: 5px 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.15s ease;
+    }
+
+    .paste-btn:hover {
+      background: rgba(255, 255, 255, 0.14);
+      color: var(--text-main);
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      height: 46px;
+      padding: 0 18px;
+      border-radius: var(--radius-md);
+      font-size: 0.88rem;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: linear-gradient(135deg, #7174f8 0%, #5850ec 100%);
+      transform: translateY(-1px);
+    }
+
+    .btn-run {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
+    }
+
+    .btn-run:hover:not(:disabled) {
+      background: linear-gradient(135deg, #18c98e 0%, #08a374 100%);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: var(--bg-surface-elevated);
+      color: var(--text-main);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.16);
+    }
+
+    .btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    .btn svg {
+      width: 17px;
+      height: 17px;
+    }
+
+    /* Progress Banner */
+    .progress-box {
+      margin-top: 16px;
+      padding: 12px 16px;
+      background: rgba(11, 15, 25, 0.8);
+      border: 1px solid rgba(99, 102, 241, 0.25);
+      border-radius: var(--radius-md);
+      display: none;
+    }
+
+    .progress-box.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      font-size: 0.82rem;
+    }
+
+    .progress-title {
+      font-weight: 600;
+      color: #c7d2fe;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .progress-percent {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      color: #818cf8;
+    }
+
+    .progress-bar-track {
+      width: 100%;
+      height: 7px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, #6366f1, #06b6d4, #10b981);
+      border-radius: 999px;
+      transition: width 0.3s ease;
+    }
+
+    /* List Controls */
+    .list-section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .list-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .list-title h2 {
+      font-size: 1.15rem;
+      font-weight: 700;
+    }
+
+    .list-badge {
+      font-size: 0.74rem;
+      background: rgba(99, 102, 241, 0.15);
+      color: #a5b4fc;
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .filter-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .search-input-wrapper {
+      position: relative;
+    }
+
+    .search-input-wrapper input {
+      height: 36px;
+      padding: 0 12px 0 34px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      color: var(--text-main);
+      font-size: 0.82rem;
+      width: 190px;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .search-input-wrapper input:focus {
+      border-color: var(--primary);
+      width: 230px;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-dim);
+      display: flex;
+    }
+
+    .search-icon svg {
+      width: 15px;
+      height: 15px;
+    }
+
+    .filter-tabs {
+      display: flex;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 3px;
+    }
+
+    .filter-tab {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.76rem;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .filter-tab.active {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    /* Account List Items (Row View) */
+    .accounts-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .account-row {
+      background: var(--bg-row);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.2s ease;
+      backdrop-filter: blur(8px);
+    }
+
+    .account-row:hover {
+      background: var(--bg-row-hover);
+      border-color: rgba(255, 255, 255, 0.18);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+    }
+
+    .account-row::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: var(--text-dim);
+      transition: background 0.2s ease;
+    }
+
+    .account-row.status-success::before { background: var(--accent-green); }
+    .account-row.status-running::before { background: var(--accent-cyan); }
+    .account-row.status-error::before { background: var(--accent-red); }
+    .account-row.status-idle::before { background: #64748b; }
+
+    /* Row Index */
+    .row-index {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-dim);
+      width: 28px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    /* Avatar Column */
+    .avatar-wrapper {
+      position: relative;
+      width: 52px;
+      height: 52px;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: linear-gradient(135deg, #182236, #0e1524);
+      border: 1.5px solid rgba(99, 102, 241, 0.25);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+    }
+
+    .account-row:hover .avatar-wrapper {
+      border-color: rgba(99, 102, 241, 0.55);
+    }
+
+    .avatar-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .avatar-fallback {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #1e293b, #334155);
+      color: #c7d2fe;
+      font-size: 1.25rem;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    /* Account Details (Middle Info) */
+    .account-details {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .details-top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .player-name {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #ffffff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 6px;
+      letter-spacing: 0.02em;
+    }
+
+    .badge-level {
+      background: rgba(245, 158, 11, 0.14);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: #fcd34d;
+    }
+
+    .badge-server {
+      background: rgba(6, 182, 212, 0.14);
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      color: #67e8f9;
+    }
+
+    .details-middle {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      font-size: 0.8rem;
+    }
+
+    .id-field {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .id-field strong {
+      color: #cbd5e1;
+      font-weight: 600;
+    }
+
+    .copy-btn {
+      background: none;
+      border: none;
+      color: var(--text-dim);
+      cursor: pointer;
+      display: inline-flex;
+      padding: 2px 4px;
+      border-radius: 4px;
+      transition: color 0.15s, background 0.15s;
+    }
+
+    .copy-btn:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .copy-btn svg {
+      width: 14px;
+      height: 14px;
+    }
+
+
+    /* Right Side Status Column */
+    .row-status-col {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 6px;
+      flex-shrink: 0;
+      min-width: 140px;
+    }
+
+    .badge-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: 8px;
+    }
+
+    .badge-status.idle {
+      background: rgba(148, 163, 184, 0.1);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      color: #94a3b8;
+    }
+
+    .badge-status.running {
+      background: rgba(6, 182, 212, 0.15);
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      color: #38bdf8;
+    }
+
+    .badge-status.success {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: #34d399;
+    }
+
+    .badge-status.error {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #f87171;
+    }
+
+    .status-extra {
+      font-size: 0.74rem;
+      color: var(--text-dim);
+      text-align: right;
+      max-width: 150px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* Empty State */
+    .empty-state {
+      padding: 48px 20px;
+      text-align: center;
+      background: var(--bg-surface);
+      border: 1px dashed var(--border-subtle);
+      border-radius: var(--radius-xl);
+    }
+
+    .empty-state-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.03);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 14px;
+      color: var(--text-dim);
+    }
+
+    .empty-state-icon svg {
+      width: 28px;
+      height: 28px;
+    }
+
+    .empty-state h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .empty-state p {
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      max-width: 360px;
+      margin: 0 auto;
+    }
+
+    /* Toast */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 9999;
+      pointer-events: none;
+    }
+
+    .toast {
+      pointer-events: auto;
+      padding: 12px 18px;
+      background: #182238;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      color: var(--text-main);
+      font-size: 0.88rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 280px;
+      max-width: 420px;
+      animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: opacity 0.3s, transform 0.3s;
+    }
+
+    .toast-success { border-color: rgba(16, 185, 129, 0.4); }
+    .toast-error { border-color: rgba(239, 68, 68, 0.4); }
+    .toast-info { border-color: rgba(99, 102, 241, 0.4); }
+
+    .toast-icon { display: flex; flex-shrink: 0; }
+    .toast-icon svg { width: 18px; height: 18px; }
+    .toast-success .toast-icon { color: var(--accent-green); }
+    .toast-error .toast-icon { color: var(--accent-red); }
+    .toast-info .toast-icon { color: #818cf8; }
+
+    .toast-message { flex: 1; font-weight: 500; }
+
+    .spinner {
+      width: 15px;
+      height: 15px;
+      border: 2px solid currentColor;
+      border-right-color: transparent;
+      border-radius: 50%;
+      display: inline-block;
+      animation: spin 0.7s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+
+    @media (max-width: 768px) {
+      body { padding: 18px 12px 48px; }
+      .app-header { flex-direction: column; align-items: flex-start; }
+      .header-status-panel { width: 100%; justify-content: space-between; }
+      .input-action-bar { flex-direction: column; }
+      .btn-group { width: 100%; }
+      .btn { flex: 1; }
+      .list-section-header { flex-direction: column; align-items: flex-start; }
+      .filter-controls { width: 100%; justify-content: space-between; }
+      .search-input-wrapper { flex: 1; }
+      .search-input-wrapper input { width: 100%; }
+      .account-row { flex-direction: column; align-items: flex-start; gap: 12px; }
+      .row-index { display: none; }
+      .row-status-col { align-items: flex-start; width: 100%; padding-top: 8px; border-top: 1px solid rgba(255, 255, 255, 0.05); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1h14v1z"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1>Top Heroes · Danh Sách Tài Khoản</h1>
+          <p>Tự động điểm danh hàng ngày &amp; Thông tin tài khoản</p>
+        </div>
+      </div>
+
+      <div class="header-status-panel">
+        <div class="clock-badge" title="Giờ Việt Nam (Asia/Ho_Chi_Minh)">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+          <span id="vn-clock">--:--:--</span>
+        </div>
+
+        <div class="auto-badge" id="auto-run-badge" title="Tự động kiểm tra lúc 09:00 hàng ngày">
+          <span class="pulse-dot"></span>
+          <span id="auto-run-status">Auto: 09:00 VN</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Stats Overview Cards -->
+    <section class="stats-grid" aria-label="Thống kê tổng quan">
+      <div class="stat-card">
+        <div class="stat-icon total">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>
+        </div>
+        <div class="stat-info">
+          <div class="stat-value" id="stat-total">0</div>
+          <div class="stat-label">Tổng số tài khoản</div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon success">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+          </svg>
+        </div>
+        <div class="stat-info">
+          <div class="stat-value" id="stat-success">0</div>
+          <div class="stat-label">Check-in thành công</div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon pending">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+        </div>
+        <div class="stat-info">
+          <div class="stat-value" id="stat-pending">0</div>
+          <div class="stat-label">Chờ kiểm tra</div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon failed">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+        </div>
+        <div class="stat-info">
+          <div class="stat-value" id="stat-failed">0</div>
+          <div class="stat-label">Lỗi / Thất bại</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Action Bar Panel -->
+    <section class="action-panel" aria-label="Bảng điều khiển và thêm ID">
+      <form id="add-form" class="input-action-bar" autocomplete="off">
+        <div class="input-wrapper">
+          <span class="input-icon">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+          </span>
+          <input
+            id="account-id"
+            name="id"
+            class="id-input"
+            type="text"
+            placeholder="Nhập ID tài khoản cần thêm (ví dụ: 2439818062522)..."
+            required
+          >
+          <button type="button" id="paste-btn" class="paste-btn" title="Dán từ Clipboard">Dán</button>
+        </div>
+
+        <div class="btn-group">
+          <button id="add-button" class="btn btn-primary" type="submit">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            <span class="button-label">Thêm ID</span>
+          </button>
+
+          <button id="run-button" class="btn btn-run" type="button">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+            <span class="button-label">Chạy tất cả</span>
+          </button>
+
+          <button id="refresh-button" class="btn btn-secondary" type="button" title="Tải lại từ máy chủ">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <polyline points="23 4 23 10 17 10"></polyline>
+              <polyline points="1 20 1 14 7 14"></polyline>
+              <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+            </svg>
+            <span class="button-label">Làm mới</span>
+          </button>
+        </div>
+      </form>
+
+      <!-- Progress Box -->
+      <div id="progress-box" class="progress-box" aria-live="polite">
+        <div class="progress-header">
+          <div class="progress-title">
+            <span class="spinner"></span>
+            <span id="progress-text">Đang kiểm tra dữ liệu...</span>
+          </div>
+          <div class="progress-percent" id="progress-percent">0%</div>
+        </div>
+        <div class="progress-bar-track">
+          <div id="progress-bar-fill" class="progress-bar-fill"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Accounts List View Section -->
+    <section class="list-section" aria-label="Danh sách tài khoản">
+      <div class="list-section-header">
+        <div class="list-title">
+          <h2>Danh sách tài khoản</h2>
+          <span class="list-badge" id="list-counter">0 ID</span>
+        </div>
+
+        <div class="filter-controls">
+          <div class="search-input-wrapper">
+            <span class="search-icon">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+            </span>
+            <input type="text" id="search-input" placeholder="Tìm ID, Tên, Server...">
+          </div>
+
+          <div class="filter-tabs">
+            <button class="filter-tab active" data-filter="all">Tất cả</button>
+            <button class="filter-tab" data-filter="success">Đã check-in</button>
+            <button class="filter-tab" data-filter="pending">Chờ</button>
+            <button class="filter-tab" data-filter="error">Lỗi</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rows List -->
+      <div id="accounts-list" class="accounts-list" aria-live="polite">
+        <!-- Rendered dynamically -->
+      </div>
+    </section>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container" aria-live="assertive"></div>
+
+  <script>
+    /* ==========================================================================
+       Application State & Elements
+       ========================================================================== */
+    const addForm = document.querySelector('#add-form');
+    const idInput = document.querySelector('#account-id');
+    const pasteBtn = document.querySelector('#paste-btn');
+    const addButton = document.querySelector('#add-button');
+    const runButton = document.querySelector('#run-button');
+    const refreshButton = document.querySelector('#refresh-button');
+    const accountsListContainer = document.querySelector('#accounts-list');
+    const searchInput = document.querySelector('#search-input');
+    const filterTabs = document.querySelectorAll('.filter-tab');
+    
+    // Header & stats
+    const vnClock = document.querySelector('#vn-clock');
+    const autoRunStatus = document.querySelector('#auto-run-status');
+    const statTotal = document.querySelector('#stat-total');
+    const statSuccess = document.querySelector('#stat-success');
+    const statPending = document.querySelector('#stat-pending');
+    const statFailed = document.querySelector('#stat-failed');
+    const listCounter = document.querySelector('#list-counter');
+    
+    // Progress & Toast
+    const progressBox = document.querySelector('#progress-box');
+    const progressText = document.querySelector('#progress-text');
+    const progressPercent = document.querySelector('#progress-percent');
+    const progressBarFill = document.querySelector('#progress-bar-fill');
+    const toastContainer = document.querySelector('#toast-container');
+
+    // API Origins
+    const apiOverride = new URLSearchParams(window.location.search).get('api');
+    const isLocalStaticServer = ['5500', '5501', '5502', '5503', '5173', '3000'].includes(window.location.port);
+    const apiOrigin = apiOverride || (
+      isLocalStaticServer
+        ? `${window.location.protocol === 'https:' ? 'https:' : 'http:'}//${window.location.hostname || '127.0.0.1'}:8000`
+        : window.location.origin
+    );
+    const API_BASE = apiOrigin.replace(/\/+$/, '');
+
+    // State
+    let accountsList = []; // Array of { id, status: 'idle'|'running'|'success'|'error', data: { n, l, s, avatar } }
+    let isRunningAll = false;
+    let currentFilter = 'all';
+    let searchQuery = '';
+    let autoRunDate = '';
+    let autoRunTimer;
+
+    const vietnamTimeFormatter = new Intl.DateTimeFormat('en-GB', {
+      timeZone: 'Asia/Ho_Chi_Minh',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hourCycle: 'h23'
+    });
+
+    /* ==========================================================================
+       Helpers & Toast Notifications
+       ========================================================================== */
+    function showToast(message, type = 'info', duration = 3200) {
+      const toast = document.createElement('div');
+      toast.className = `toast toast-${type}`;
+
+      let iconSvg = '';
+      if (type === 'success') {
+        iconSvg = `<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>`;
+      } else if (type === 'error') {
+        iconSvg = `<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>`;
+      } else {
+        iconSvg = `<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>`;
+      }
+
+      toast.innerHTML = `
+        <span class="toast-icon">${iconSvg}</span>
+        <span class="toast-message">${escapeHtml(message)}</span>
+      `;
+      toastContainer.appendChild(toast);
+
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(10px)';
+        setTimeout(() => toast.remove(), 300);
+      }, duration);
+    }
+
+    function escapeHtml(text) {
+      if (text === null || text === undefined) return '';
+      return String(text)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function getVietnamTimeParts(date = new Date()) {
+      const parts = Object.fromEntries(
+        vietnamTimeFormatter.formatToParts(date)
+          .filter((part) => part.type !== 'literal')
+          .map((part) => [part.type, Number(part.value)])
+      );
+      return {
+        ...parts,
+        dateKey: `${parts.year}-${String(parts.month).padStart(2, '0')}-${String(parts.day).padStart(2, '0')}`
+      };
+    }
+
+    function updateVietnamClock() {
+      const parts = getVietnamTimeParts();
+      const timeStr = `${String(parts.hour).padStart(2, '0')}:${String(parts.minute).padStart(2, '0')}:${String(parts.second).padStart(2, '0')}`;
+      vnClock.textContent = timeStr;
+    }
+    setInterval(updateVietnamClock, 1000);
+    updateVietnamClock();
+
+    /* ==========================================================================
+       API Request Wrapper
+       ========================================================================== */
+    async function request(path, options = {}) {
+      let response;
+      try {
+        response = await fetch(`${API_BASE}${path}`, options);
+      } catch {
+        throw new Error('Không thể kết nối FastAPI. Vui lòng kiểm tra backend đang bật.');
+      }
+
+      if (!response.ok) {
+        let detail = '';
+        try {
+          const errorData = await response.json();
+          detail = errorData.detail || errorData.message || '';
+        } catch {
+          detail = '';
+        }
+        throw new Error(detail || `Máy chủ trả về lỗi HTTP ${response.status}.`);
+      }
+
+      return response.json();
+    }
+
+    /* ==========================================================================
+       Render List (List View - Only Account Info, No Rerun Buttons)
+       ========================================================================== */
+    function updateStats() {
+      const total = accountsList.length;
+      const success = accountsList.filter(a => a.status === 'success').length;
+      const failed = accountsList.filter(a => a.status === 'error').length;
+      const pending = accountsList.filter(a => a.status === 'idle' || a.status === 'running').length;
+
+      statTotal.textContent = total;
+      statSuccess.textContent = success;
+      statFailed.textContent = failed;
+      statPending.textContent = pending;
+      listCounter.textContent = `${total} ID`;
+    }
+
+    function renderAccounts() {
+      updateStats();
+
+      // Filter and search
+      const filtered = accountsList.filter(account => {
+        const matchesSearch = !searchQuery || 
+          account.id.toLowerCase().includes(searchQuery) ||
+          (account.data && account.data.n && account.data.n.toLowerCase().includes(searchQuery)) ||
+          (account.data && account.data.s && account.data.s.toLowerCase().includes(searchQuery));
+
+        if (!matchesSearch) return false;
+
+        if (currentFilter === 'all') return true;
+        if (currentFilter === 'success') return account.status === 'success';
+        if (currentFilter === 'pending') return account.status === 'idle' || account.status === 'running';
+        if (currentFilter === 'error') return account.status === 'error';
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        if (accountsList.length === 0) {
+          accountsListContainer.innerHTML = `
+            <div class="empty-state">
+              <div class="empty-state-icon">
+                <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                </svg>
+              </div>
+              <h3>Chưa có ID nào trong danh sách</h3>
+              <p>Hãy nhập ID ở khung bên trên và nhấn "Thêm ID" để bắt đầu theo dõi.</p>
+            </div>
+          `;
+        } else {
+          accountsListContainer.innerHTML = `
+            <div class="empty-state">
+              <div class="empty-state-icon">
+                <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+              </div>
+              <h3>Không tìm thấy tài khoản phù hợp</h3>
+              <p>Thử tìm kiếm với từ khóa khác hoặc chuyển tab bộ lọc.</p>
+            </div>
+          `;
+        }
+        return;
+      }
+
+      accountsListContainer.innerHTML = filtered.map((account, index) => {
+        const isSuccess = account.status === 'success' && account.data;
+        const isRunning = account.status === 'running';
+        const isError = account.status === 'error';
+        
+        // Data info from API
+        const playerName = isSuccess && account.data.n ? account.data.n : (account.data ? account.data.n || 'Chưa có tên' : 'Chưa kiểm tra');
+        const level = isSuccess && account.data.l ? account.data.l : (account.data?.l ?? '—');
+        const server = isSuccess && account.data.s ? account.data.s : (account.data?.s ?? '—');
+        const DEFAULT_AVATAR = 'https://cdn.smobgame.com/template/CP90/images/home/section2/hero/char/1.png';
+        const avatarUrl = (account.data && (account.data.avatar || account.data.avatar_url || account.data.head_img)) || DEFAULT_AVATAR;
+
+        // Status badge
+        let statusBadgeHtml = '';
+        if (isRunning) {
+          statusBadgeHtml = `<span class="badge-status running"><span class="spinner" style="width:11px;height:11px"></span> Đang check...</span>`;
+        } else if (isSuccess) {
+          statusBadgeHtml = `<span class="badge-status success">✓ Đã check-in</span>`;
+        } else if (isError) {
+          statusBadgeHtml = `<span class="badge-status error">✕ Thất bại</span>`;
+        } else {
+          statusBadgeHtml = `<span class="badge-status idle">Chờ kiểm tra</span>`;
+        }
+
+        const avatarImgHtml = `
+          <img 
+            src="${escapeHtml(avatarUrl)}" 
+            alt="${escapeHtml(playerName)}" 
+            class="avatar-img"
+            loading="lazy"
+            onerror="this.onerror=null; this.src='${DEFAULT_AVATAR}';"
+          >
+        `;
+
+        return `
+          <div class="account-row status-${account.status}" data-id="${escapeHtml(account.id)}">
+            <!-- STT -->
+            <div class="row-index">#${String(index + 1).padStart(2, '0')}</div>
+
+            <!-- Avatar -->
+            <div class="avatar-wrapper">
+              ${avatarImgHtml}
+            </div>
+
+            <!-- Details: Info -->
+            <div class="account-details">
+              <div class="details-top">
+                <span class="player-name">${escapeHtml(playerName)}</span>
+                <span class="badge badge-level">Lv. ${escapeHtml(level)}</span>
+                <span class="badge badge-server">Server ${escapeHtml(server)}</span>
+              </div>
+
+              <div class="details-middle">
+                <div class="id-field">
+                  <span>ID:</span>
+                  <strong>${escapeHtml(account.id)}</strong>
+                  <button type="button" class="copy-btn" onclick="copyText('${escapeHtml(account.id)}', 'mã ID')" title="Sao chép ID">
+                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                      <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Column: Only Status Info -->
+            <div class="row-status-col">
+              ${statusBadgeHtml}
+              ${account.error ? `
+                <span class="status-extra" title="${escapeHtml(account.error)}">${escapeHtml(account.error)}</span>
+              ` : `
+                <span class="status-extra">${isSuccess ? 'Hôm nay' : 'Đang đợi'}</span>
+              `}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    /* ==========================================================================
+       Copy Text Helper
+       ========================================================================== */
+    window.copyText = function(text, label = 'nội dung') {
+      if (!text) return;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+          showToast(`Đã sao chép ${label}!`, 'success');
+        }).catch(() => {
+          fallbackCopyText(text, label);
+        });
+      } else {
+        fallbackCopyText(text, label);
+      }
+    };
+
+    function fallbackCopyText(text, label) {
+      const textArea = document.createElement("textarea");
+      textArea.value = text;
+      textArea.style.position = "fixed";
+      textArea.style.opacity = "0";
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        showToast(`Đã sao chép ${label}!`, 'success');
+      } catch {
+        showToast('Không thể sao chép tự động.', 'error');
+      }
+      document.body.removeChild(textArea);
+    }
+
+    /* ==========================================================================
+       Load Accounts from FastAPI
+       ========================================================================== */
+    async function loadAccounts(silent = false) {
+      if (!silent) {
+        refreshButton.disabled = true;
+        refreshButton.querySelector('.button-label').textContent = 'Đang tải...';
+      }
+
+      try {
+        const res = await request(`/accounts?request=${Date.now()}`, { cache: 'no-store' });
+        if (res && Array.isArray(res.data)) {
+          accountsList = res.data.map(item => {
+            const hasData = Boolean(item.data);
+            const isCompleted = item.status === true;
+            return {
+              id: item.id,
+              status: isCompleted ? 'success' : 'idle',
+              data: item.data || null,
+              error: ''
+            };
+          });
+          renderAccounts();
+          if (!silent) {
+            showToast(`Đã cập nhật danh sách: ${accountsList.length} tài khoản`, 'info');
+          }
+        }
+      } catch (err) {
+        showToast(err.message, 'error');
+      } finally {
+        if (!silent) {
+          refreshButton.disabled = false;
+          refreshButton.querySelector('.button-label').textContent = 'Làm mới';
+        }
+      }
+    }
+
+    /* ==========================================================================
+       Add New Account
+       ========================================================================== */
+    addForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = idInput.value.trim();
+      if (!id) {
+        showToast('Vui lòng nhập ID hợp lệ.', 'error');
+        idInput.focus();
+        return;
+      }
+
+      addButton.disabled = true;
+      const label = addButton.querySelector('.button-label');
+      label.textContent = 'Đang thêm...';
+
+      try {
+        const res = await request('/add', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id })
+        });
+
+        if (res.status) {
+          showToast(res.message || 'Thêm ID thành công!', 'success');
+          idInput.value = '';
+          if (!accountsList.some(a => a.id === id)) {
+            accountsList.unshift({
+              id,
+              status: 'idle',
+              data: null,
+              error: ''
+            });
+            renderAccounts();
+          }
+        } else {
+          showToast(res.message || 'ID này đã tồn tại trong danh sách.', 'error');
+        }
+      } catch (err) {
+        showToast(err.message, 'error');
+      } finally {
+        addButton.disabled = false;
+        label.textContent = 'Thêm ID';
+      }
+    });
+
+    pasteBtn.addEventListener('click', async () => {
+      try {
+        if (navigator.clipboard && navigator.clipboard.readText) {
+          const text = await navigator.clipboard.readText();
+          if (text) {
+            idInput.value = text.trim();
+            idInput.focus();
+            showToast('Đã dán ID từ clipboard!', 'info');
+          }
+        } else {
+          showToast('Trình duyệt không hỗ trợ đọc clipboard tự động.', 'error');
+        }
+      } catch {
+        showToast('Không có quyền truy cập clipboard.', 'error');
+      }
+    });
+
+    /* ==========================================================================
+       Run All Accounts Check Sequentially
+       ========================================================================== */
+    async function runAllCheck(isAuto = false) {
+      if (isRunningAll) return false;
+      if (accountsList.length === 0) {
+        showToast('Danh sách chưa có ID nào để kiểm tra.', 'error');
+        return false;
+      }
+
+      isRunningAll = true;
+      runButton.disabled = true;
+      runButton.querySelector('.button-label').textContent = 'Đang chạy...';
+      
+      progressBox.classList.add('active');
+      progressBarFill.style.width = '0%';
+      progressPercent.textContent = '0%';
+
+      let successCount = 0;
+      const total = accountsList.length;
+
+      for (let i = 0; i < total; i++) {
+        const account = accountsList[i];
+        const percent = Math.round((i / total) * 100);
+        progressBarFill.style.width = `${percent}%`;
+        progressPercent.textContent = `${percent}%`;
+        progressText.textContent = `[${i + 1}/${total}] Đang kiểm tra ID: ${account.id}...`;
+
+        account.status = 'running';
+        account.error = '';
+        renderAccounts();
+
+        try {
+          const result = await request(`/run/${encodeURIComponent(account.id)}?request=${Date.now()}-${i}`, {
+            method: 'POST',
+            cache: 'no-store'
+          });
+
+          if (result.status && result.data) {
+            account.status = 'success';
+            account.data = result.data;
+            successCount++;
+          } else {
+            account.status = 'error';
+            account.error = result.message || 'Kiểm tra thất bại';
+          }
+        } catch (err) {
+          account.status = 'error';
+          account.error = err.message;
+        }
+
+        renderAccounts();
+      }
+
+      // Finish progress
+      progressBarFill.style.width = '100%';
+      progressPercent.textContent = '100%';
+      progressText.textContent = `Hoàn tất: ${successCount}/${total} tài khoản thành công!`;
+
+      showToast(`Hoàn tất kiểm tra: ${successCount}/${total} thành công!`, 'success', 5000);
+
+      setTimeout(() => {
+        progressBox.classList.remove('active');
+      }, 4000);
+
+      runButton.disabled = false;
+      runButton.querySelector('.button-label').textContent = 'Chạy tất cả';
+      isRunningAll = false;
+      return true;
+    }
+
+    runButton.addEventListener('click', () => runAllCheck(false));
+    refreshButton.addEventListener('click', () => loadAccounts(false));
+
+    /* ==========================================================================
+       Search & Filter Events
+       ========================================================================== */
+    searchInput.addEventListener('input', (e) => {
+      searchQuery = e.target.value.toLowerCase().trim();
+      renderAccounts();
+    });
+
+    filterTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        filterTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        currentFilter = tab.getAttribute('data-filter');
+        renderAccounts();
+      });
+    });
+
+    /* ==========================================================================
+       Automatic Run at 09:00 AM (Vietnam Time)
+       ========================================================================== */
+    async function checkAutomaticRun() {
+      const now = getVietnamTimeParts();
+      if (now.hour < 9 || autoRunDate === now.dateKey) {
+        scheduleAutomaticRun();
+        return;
+      }
+
+      if (isRunningAll) {
+        autoRunTimer = window.setTimeout(checkAutomaticRun, 60_000);
+        return;
+      }
+
+      showToast('Đến 09:00 giờ Việt Nam: Bắt đầu tự động kiểm tra...', 'info');
+      const completed = await runAllCheck(true);
+      if (completed) {
+        autoRunDate = now.dateKey;
+        scheduleAutomaticRun();
+      } else {
+        autoRunTimer = window.setTimeout(checkAutomaticRun, 60_000);
+      }
+    }
+
+    function scheduleAutomaticRun() {
+      window.clearTimeout(autoRunTimer);
+      const now = new Date();
+      const vietnam = getVietnamTimeParts(now);
+
+      if (vietnam.hour >= 9 && autoRunDate !== vietnam.dateKey) {
+        autoRunTimer = window.setTimeout(checkAutomaticRun, 0);
+        return;
+      }
+
+      let nextRun = Date.UTC(vietnam.year, vietnam.month - 1, vietnam.day, 9) - 7 * 60 * 60 * 1000;
+      if (now.getTime() >= nextRun) {
+        nextRun += 24 * 60 * 60 * 1000;
+      }
+
+      const diff = Math.max(1000, nextRun - now.getTime());
+      const hoursLeft = Math.floor(diff / (1000 * 60 * 60));
+      const minsLeft = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      autoRunStatus.textContent = `Auto 09:00 (còn ${hoursLeft}h ${minsLeft}m)`;
+
+      autoRunTimer = window.setTimeout(checkAutomaticRun, diff);
+    }
+
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) scheduleAutomaticRun();
+    });
+
+    /* ==========================================================================
+       Init
+       ========================================================================== */
+    loadAccounts(true);
+    scheduleAutomaticRun();
+  </script>
+</body>
+</html>
